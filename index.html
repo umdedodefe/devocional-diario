@@ -1,84 +1,152 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Devocional Diário</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Devocional Diário ☕</title>
+
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;max-width:800px;margin:28px auto;padding:0 16px;color:#111}
-    header{margin-bottom:18px}
-    .date{color:#666;font-size:0.95rem}
-    #content{margin-top:18px;padding:18px;border-radius:8px;background:#fafafa;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-    .error{color:#a33}
-    .loader{opacity:.6}
-    footer{margin-top:28px;color:#666;font-size:0.9rem}
+    /* ---------- ESTILO GERAL ---------- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(180deg, #f5efe6 0%, #f9f7f3 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #333;
+      text-align: center;
+    }
+
+    /* ---------- CONTAINER ---------- */
+    .devocional-container {
+      max-width: 480px;
+      width: 90%;
+      background: #fffdf8;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      border-radius: 18px;
+      padding: 24px 20px 30px;
+      animation: fadeIn 0.8s ease;
+    }
+
+    /* ---------- CABEÇALHO ---------- */
+    .icon {
+      font-size: 2.5rem;
+      color: #c49a6c;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin: 10px 0 5px;
+      color: #3d2c19;
+    }
+
+    .date {
+      font-size: 0.9rem;
+      color: #7d6f5e;
+    }
+
+    /* ---------- CONTEÚDO ---------- */
+    #content {
+      margin-top: 20px;
+      text-align: left;
+      background: #fffaf3;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+      line-height: 1.6;
+    }
+
+    #content h2 {
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+      color: #4b3c2a;
+    }
+
+    #content p {
+      margin: 8px 0;
+    }
+
+    #content em {
+      color: #7d6f5e;
+    }
+
+    .verse {
+      font-weight: 600;
+      color: #5b4024;
+    }
+
+    /* ---------- RODAPÉ ---------- */
+    footer {
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: #8c7a6a;
+    }
+
+    /* ---------- ANIMAÇÃO ---------- */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
+
 <body>
-  <header>
+  <div class="devocional-container">
+    <div class="icon">☀️</div>
     <h1>Devocional Diário</h1>
     <div class="date" id="displayDate">Carregando...</div>
-  </header>
 
-  <main>
-    <div id="content" class="loader">Buscando devocional...</div>
-  </main>
+    <div id="content">Buscando o devocional de hoje...</div>
 
-  <footer>
-    <small>Se o devocional do dia não existir, será exibido o último disponível automaticamente.</small>
-  </footer>
+    <footer>
+      <p>✨ Que sua manhã seja iluminada pela presença de Deus.</p>
+    </footer>
+  </div>
 
-<script>
-(async function(){
-  const contentEl = document.getElementById('content');
-  const displayDateEl = document.getElementById('displayDate');
+  <script>
+    (async function(){
+      const contentEl = document.getElementById('content');
+      const displayDateEl = document.getElementById('displayDate');
+      const entriesPath = 'entries/';
+      const dateFormat = d => d.toISOString().slice(0,10);
+      const maxFallbackDays = 7;
 
-  // --- CONFIGURAÇÃO (edite se quiser) ---
-  const entriesPath = 'entries/';   // pasta onde estão os arquivos
-  const dateFormat = d => d.toISOString().slice(0,10); // YYYY-MM-DD
-  const maxFallbackDays = 7; // quantos dias retroceder se não encontrar o dia atual
-  // ---------------------------------------
+      const today = new Date();
+      displayDateEl.textContent = today.toLocaleDateString('pt-BR', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
 
-  // pega data local do visitante
-  const today = new Date();
-  // Se quiser fixar em um fuso horário (ex: São Paulo -3): descomente e ajuste abaixo
-  // const tzOffsetHours = -3; today.setHours(today.getHours() + tzOffsetHours);
+      async function fetchEntryFor(dateObj){
+        const name = dateFormat(dateObj) + '.html';
+        const url = entriesPath + name;
+        try {
+          const res = await fetch(url, {cache: "no-cache"});
+          if (!res.ok) throw new Error('not found');
+          const html = await res.text();
+          return { ok:true, html, name };
+        } catch(e) {
+          return { ok:false };
+        }
+      }
 
-  displayDateEl.textContent = 'Hoje: ' + today.toLocaleDateString();
+      let loaded = false;
+      for (let i=0;i<=maxFallbackDays;i++){
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const attempt = await fetchEntryFor(d);
+        if (attempt.ok){
+          contentEl.innerHTML = attempt.html;
+          loaded = true;
+          break;
+        }
+      }
 
-  async function fetchEntryFor(dateObj){
-    const name = dateFormat(dateObj) + '.html';
-    const url = entriesPath + name;
-    try {
-      const res = await fetch(url, {cache: "no-cache"});
-      if (!res.ok) throw new Error('not found');
-      const html = await res.text();
-      return { ok:true, html, name };
-    } catch(e) {
-      return { ok:false, error:e };
-    }
-  }
-
-  let loaded = false;
-  for (let i=0;i<=maxFallbackDays;i++){
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const attempt = await fetchEntryFor(d);
-    if (attempt.ok){
-      contentEl.classList.remove('loader');
-      contentEl.innerHTML = attempt.html;
-      const shownDate = new Date(d);
-      displayDateEl.textContent = 'Mostrando: ' + shownDate.toLocaleDateString() + ' (' + attempt.name + ')';
-      loaded = true;
-      break;
-    }
-  }
-
-  if (!loaded){
-    contentEl.classList.remove('loader');
-    contentEl.innerHTML = '<p class="error">Devocional do dia não encontrado e nenhum fallback disponível.</p><p>Verifique se os arquivos em <code>' + entriesPath + '</code> foram enviados corretamente.</p>';
-  }
-})();
-</script>
+      if (!loaded){
+        contentEl.innerHTML = '<p><strong>Ops!</strong> Ainda não há devocional disponível para hoje.</p><p>Volte amanhã para uma nova reflexão! ☕</p>';
+      }
+    })();
+  </script>
 </body>
 </html>
+
