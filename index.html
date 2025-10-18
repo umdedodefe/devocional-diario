@@ -1,86 +1,84 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Devocional Diário - Um Dedo de Fé</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Devocional Diário</title>
   <style>
-    body {
-      font-family: 'Georgia', serif;
-      background-color: #faf7f2;
-      color: #2d2d2d;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #d4b996;
-      padding: 20px;
-      color: white;
-    }
-    main {
-      padding: 30px 20px;
-      max-width: 700px;
-      margin: 0 auto;
-      background-color: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    h1 {
-      margin-top: 0;
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 0.9em;
-      color: #888;
-    }
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;max-width:800px;margin:28px auto;padding:0 16px;color:#111}
+    header{margin-bottom:18px}
+    .date{color:#666;font-size:0.95rem}
+    #content{margin-top:18px;padding:18px;border-radius:8px;background:#fafafa;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .error{color:#a33}
+    .loader{opacity:.6}
+    footer{margin-top:28px;color:#666;font-size:0.9rem}
   </style>
 </head>
 <body>
   <header>
-    <h1>☕ Devocional Diário - Um Dedo de Fé</h1>
-    <p>Uma dose de fé e esperança para o seu dia</p>
+    <h1>Devocional Diário</h1>
+    <div class="date" id="displayDate">Carregando...</div>
   </header>
 
-  <main id="devocional">
-    <h2 id="titulo"></h2>
-    <p id="versiculo"></p>
-    <p id="mensagem"></p>
+  <main>
+    <div id="content" class="loader">Buscando devocional...</div>
   </main>
 
   <footer>
-    <p>© 2025 Um Dedo de Fé - Todos os direitos reservados</p>
+    <small>Se o devocional do dia não existir, será exibido o último disponível automaticamente.</small>
   </footer>
 
-  <script>
-    // Lista de devocionais diários (você pode atualizar esse conteúdo semanalmente ou mensalmente)
-    const devocionais = [
-      {
-        titulo: 'Fé que move montanhas',
-        versiculo: 'Provérbios 3:5-6 — Confia no Senhor de todo o teu coração...',
-        mensagem: 'Nem sempre entenderemos o caminho, mas podemos confiar naquele que o traçou. Hoje, descanse no cuidado de Deus.'
-      },
-      {
-        titulo: 'A Força da Gratidão',
-        versiculo: '1 Tessalonicenses 5:18 — Em tudo dai graças...',
-        mensagem: 'A gratidão transforma o coração e abre os olhos para o que Deus está fazendo, mesmo nas pequenas coisas.'
-      },
-      {
-        titulo: 'Oração que Move o Céu',
-        versiculo: 'Jeremias 33:3 — Clama a mim e responder-te-ei...',
-        mensagem: 'Quando dobramos os joelhos, o céu se move em nossa direção. Ore hoje com fé e confiança.'
-      }
-    ];
+<script>
+(async function(){
+  const contentEl = document.getElementById('content');
+  const displayDateEl = document.getElementById('displayDate');
 
-    // Seleciona o devocional do dia baseado na data atual
-    const hoje = new Date();
-    const indice = hoje.getDate() % devocionais.length;
-    const devocional = devocionais[indice];
+  // --- CONFIGURAÇÃO (edite se quiser) ---
+  const entriesPath = 'entries/';   // pasta onde estão os arquivos
+  const dateFormat = d => d.toISOString().slice(0,10); // YYYY-MM-DD
+  const maxFallbackDays = 7; // quantos dias retroceder se não encontrar o dia atual
+  // ---------------------------------------
 
-    // Atualiza o conteúdo na página
-    document.getElementById('titulo').innerText = devocional.titulo;
-    document.getElementById('versiculo').innerText = devocional.versiculo;
-    document.getElementById('mensagem').innerText = devocional.mensagem;
-  </script>
+  // pega data local do visitante
+  const today = new Date();
+  // Se quiser fixar em um fuso horário (ex: São Paulo -3): descomente e ajuste abaixo
+  // const tzOffsetHours = -3; today.setHours(today.getHours() + tzOffsetHours);
+
+  displayDateEl.textContent = 'Hoje: ' + today.toLocaleDateString();
+
+  async function fetchEntryFor(dateObj){
+    const name = dateFormat(dateObj) + '.html';
+    const url = entriesPath + name;
+    try {
+      const res = await fetch(url, {cache: "no-cache"});
+      if (!res.ok) throw new Error('not found');
+      const html = await res.text();
+      return { ok:true, html, name };
+    } catch(e) {
+      return { ok:false, error:e };
+    }
+  }
+
+  let loaded = false;
+  for (let i=0;i<=maxFallbackDays;i++){
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const attempt = await fetchEntryFor(d);
+    if (attempt.ok){
+      contentEl.classList.remove('loader');
+      contentEl.innerHTML = attempt.html;
+      const shownDate = new Date(d);
+      displayDateEl.textContent = 'Mostrando: ' + shownDate.toLocaleDateString() + ' (' + attempt.name + ')';
+      loaded = true;
+      break;
+    }
+  }
+
+  if (!loaded){
+    contentEl.classList.remove('loader');
+    contentEl.innerHTML = '<p class="error">Devocional do dia não encontrado e nenhum fallback disponível.</p><p>Verifique se os arquivos em <code>' + entriesPath + '</code> foram enviados corretamente.</p>';
+  }
+})();
+</script>
 </body>
 </html>
