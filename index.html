@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devocional Diário - Um Dedo de Fé</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #faf7f2;
+      color: #2d2d2d;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #d4b996;
+      padding: 20px;
+      color: white;
+    }
+    main {
+      padding: 30px 20px;
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin-top: 0;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>☕ Devocional Diário - Um Dedo de Fé</h1>
+    <p>Uma dose de fé e esperança para o seu dia</p>
+  </header>
+
+  <main id="devocional">
+    <h2 id="titulo"></h2>
+    <p id="versiculo"></p>
+    <p id="mensagem"></p>
+  </main>
+
+  <footer>
+    <p>© 2025 Um Dedo de Fé - Todos os direitos reservados</p>
+  </footer>
+
+  <script>
+    // Lista de devocionais diários (você pode atualizar esse conteúdo semanalmente ou mensalmente)
+    const devocionais = [
+      {
+        titulo: 'Confie Mesmo Sem Entender',
+        versiculo: 'Provérbios 3:5-6 — Confia no Senhor de todo o teu coração...',
+        mensagem: 'Nem sempre entenderemos o caminho, mas podemos confiar naquele que o traçou. Hoje, descanse no cuidado de Deus.'
+      },
+      {
+        titulo: 'A Força da Gratidão',
+        versiculo: '1 Tessalonicenses 5:18 — Em tudo dai graças...',
+        mensagem: 'A gratidão transforma o coração e abre os olhos para o que Deus está fazendo, mesmo nas pequenas coisas.'
+      },
+      {
+        titulo: 'Oração que Move o Céu',
+        versiculo: 'Jeremias 33:3 — Clama a mim e responder-te-ei...',
+        mensagem: 'Quando dobramos os joelhos, o céu se move em nossa direção. Ore hoje com fé e confiança.'
+      }
+    ];
+
+    // Seleciona o devocional do dia baseado na data atual
+    const hoje = new Date();
+    const indice = hoje.getDate() % devocionais.length;
+    const devocional = devocionais[indice];
+
+    // Atualiza o conteúdo na página
+    document.getElementById('titulo').innerText = devocional.titulo;
+    document.getElementById('versiculo').innerText = devocional.versiculo;
+    document.getElementById('mensagem').innerText = devocional.mensagem;
+  </script>
+</body>
+</html>
