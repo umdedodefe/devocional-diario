@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devocional Diário • Um Dedo de Fé</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {--marrom-escuro:#4b2a1a;--marrom-claro:#7b4c27;--dourado:#e1a640;--bege-fundo:#efe2c3;}
+body {font-family:'Montserrat',sans-serif;background-color:var(--bege-fundo);color:var(--marrom-escuro);margin:0;padding:0;line-height:1.8;}
+header {background-color:var(--bege-fundo);text-align:center;padding:20px 0 10px;border-bottom:2px solid var(--dourado);}
+header img {width:320px;height:auto;}
+main {max-width:800px;margin:40px auto;background:#fff8ef;padding:40px;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.05);}
+h1 {color:var(--marrom-escuro);font-size:1.9em;margin-bottom:10px;text-align:center;}
+.verse {font-weight:600;color:var(--marrom-claro);text-align:center;margin-bottom:20px;}
+.content p {margin-bottom:20px;font-size:1.05em;}
+.content p strong {color:var(--dourado);}
+.content p em {color:var(--marrom-claro);font-style:italic;}
+.reflection {border-left:4px solid var(--dourado);padding-left:16px;margin:30px 0;background:#fff3e0;}
+.prayer {background:#fef5e4;padding:16px;border-radius:10px;margin-top:25px;border:1px solid #f1c27d;}
+footer {text-align:center;font-size:0.9em;padding:30px 0;color:var(--marrom-claro);}
+footer a {color:var(--dourado);text-decoration:none;font-weight:600;}
+footer a:hover {text-decoration:underline;}
+</style>
+</head>
+<body>
+<header>
+<img src="logo-umdedodefe.png" alt="Um Dedo de Fé">
+</header>
+
+<!-- Aqui o devocional do dia será carregado -->
+<div id="devocional">Carregando devocional...</div>
+
+<footer>
+<p>© 2025 <strong>Um Dedo de Fé</strong> — por <a href="https://www.instagram.com/prwevertonquintino/" target="_blank">@prwevertonquintino</a></p>
+</footer>
+
+<script>
+// JavaScript para carregar o devocional do dia
+const hoje = new Date();
+const ano = hoje.getFullYear();
+const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+const dia = String(hoje.getDate()).padStart(2, '0');
+const dataHoje = `${ano}-${mes}-${dia}`;
+
+fetch(`devocionais/${dataHoje}.html`)
+  .then(r => {
+    if(!r.ok) throw new Error("Devocional não encontrado");
+    return r.text();
+  })
+  .then(html => {
+    document.getElementById('devocional').innerHTML = html;
+  })
+  .catch(err => {
+    document.getElementById('devocional').innerHTML = "<p>Ops! O devocional de hoje ainda não está disponível.</p>";
+    console.error(err);
+  });
+</script>
+</body>
+</html>
