@@ -3,11 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Devocional Diário</title>
+  <title>Devocional Diário | Um Dedo de Fé</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* === Paleta de cores tema café === */
+    :root {
+      --fundo: #f5e6ca;
+      --marrom-escuro: #3b2f2f;
+      --caramelo: #c6a984;
+      --texto: #3b2f2f;
+      --bege-claro: #fffaf2;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", Arial, sans-serif;
+      background-color: var(--fundo);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      background-color: var(--caramelo);
+      padding: 30px 20px;
+      border-bottom: 3px solid var(--marrom-escuro);
+    }
+
+    header img {
+      max-width: 220px;
+      height: auto;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      margin-top: 10px;
+      color: var(--marrom-escuro);
+    }
+
+    #today-date {
+      font-style: italic;
+      color: #4b3b2f;
+      margin-top: 4px;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: var(--bege-claro);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      padding: 20px;
+      color: var(--marrom-escuro);
+    }
+
+    .credit {
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    .loading {
+      text-align: center;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        margin: 20px;
+        padding: 20px;
+      }
+      header img {
+        max-width: 180px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
+    <!-- Substitua o caminho abaixo pela URL do seu arquivo de logo -->
+    <img src="logo-umdedodefe.png" alt="Um Dedo de Fé - Logo">
     <h1>☕ Devocional Diário</h1>
     <p id="today-date"></p>
   </header>
@@ -22,7 +102,6 @@
   </footer>
 
   <script>
-    // Obtém a data de hoje no formato YYYY-MM-DD
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -34,13 +113,9 @@
 
     const container = document.getElementById('devocional-container');
 
-    // Tenta carregar o devocional do dia
     fetch(`entries/${fileName}`)
       .then(response => {
-        if (!response.ok) {
-          // Se não achar, pega o último devocional disponível
-          return fetchLastAvailable();
-        }
+        if (!response.ok) return fetchLastAvailable();
         return response.text();
       })
       .then(html => {
@@ -50,7 +125,6 @@
         container.innerHTML = "<p>Não foi possível carregar o devocional de hoje.</p>";
       });
 
-    // Função para pegar o último devocional disponível
     async function fetchLastAvailable() {
       const response = await fetch('entries/');
       const text = await response.text();
