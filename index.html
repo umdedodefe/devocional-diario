@@ -104,7 +104,60 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* ===== Banner Promocional ===== */
-#promo-banner {
+/* ===== Banner Promocional Dinâmico ===== */
+.banner-promocional {
   text-align: center;
-  margin: 40px auto 0
+  margin: 40px auto 0;
+}
+
+.banner-promocional img {
+  width: 90%;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.banner-promocional img:hover {
+  transform: scale(1.03);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="logo-umdedodefe.png" alt="Logo Um Dedo de Fé">
+</header>
+
+<main id="conteudo-devocional">
+  <p style="text-align:center;">Carregando devocional...</p>
+</main>
+
+<footer>
+  <!-- Banner Promocional Dinâmico -->
+  <div class="banner-promocional">
+    <a href="#">
+      <img src="imagens/banner-promocional.jpg" alt="Banner Promocional">
+    </a>
+  </div>
+
+  <p style="margin-top: 20px;">
+    © <span id="ano"></span> Um Dedo de Fé — Todos os direitos reservados.<br>
+    Desenvolvido com 💛 para inspirar sua caminhada com Deus.
+  </p>
+</footer>
+
+<script>
+  // Atualiza o ano automaticamente no rodapé
+  document.getElementById("ano").textContent = new Date().getFullYear();
+
+  // Carrega o devocional do dia automaticamente
+  const hoje = new Date();
+  const dataFormatada = hoje.toISOString().split('T')[0];
+  fetch(`devocionais/${dataFormatada}.html`)
+    .then(res => res.ok ? res.text() : "<p style='text-align:center;'>Devocional ainda não disponível hoje.</p>")
+    .then(html => document.getElementById("conteudo-devocional").innerHTML = html);
+</script>
+
+</body>
+</html>
