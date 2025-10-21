@@ -125,6 +125,18 @@ footer a:hover {
 <!-- Aqui o devocional do dia será carregado -->
 <div id="devocional">Carregando devocional...</div>
 
+  <!-- Rodapé com banner promocional -->
+<footer style="text-align: center; margin-top: 40px; padding: 20px; background-color: #f8f8f8; border-top: 1px solid #ddd;">
+  <p style="font-size: 16px; color: #333; margin-bottom: 10px;">
+    🙏 Obrigado por fazer parte do projeto <strong>Um Dedo de Fé</strong>!
+  </p>
+  <a href="https://umededofe.com.br" target="_blank">
+    <img id="banner-promocional" src="imagens/banner-promocional.jpg"
+         alt="Banner promocional"
+         style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+  </a>
+</footer>
+  
 <footer>
   <p>© 2025 <strong>Um Dedo de Fé</strong> — por <a href="https://www.instagram.com/prwevertonquintino/" target="_blank">@prwevertonquintino</a></p>
 </footer>
@@ -150,18 +162,5 @@ fetch(`devocionais/${dataHoje}.html`)
     console.error(err);
   });
 </script>
-
-  <!-- Rodapé com banner promocional -->
-<footer style="text-align: center; margin-top: 40px; padding: 20px; background-color: #f8f8f8; border-top: 1px solid #ddd;">
-  <p style="font-size: 16px; color: #333; margin-bottom: 10px;">
-    🙏 Obrigado por fazer parte do projeto <strong>Um Dedo de Fé</strong>!
-  </p>
-  <a href="https://umededofe.com.br" target="_blank">
-    <img id="banner-promocional" src="imagens/banner-promocional.jpg"
-         alt="Banner promocional"
-         style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-  </a>
-</footer>
-
 </body>
 </html>
