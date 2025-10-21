@@ -86,7 +86,6 @@ h1 {
   border: 1px solid #f1c27d;
 }
 
-/* ===== Rodapé ===== */
 footer {
   text-align: center;
   font-size: 0.9em;
@@ -104,60 +103,52 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* ===== Banner Promocional Dinâmico ===== */
-.banner-promocional {
-  text-align: center;
-  margin: 40px auto 0;
+/* ===== Ajustes para o título do devocional ===== */
+.titulo-devocional {
+  line-height: 1.3; /* Espaçamento ideal no desktop */
 }
 
-.banner-promocional img {
-  width: 90%;
-  max-width: 600px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease;
-}
-
-.banner-promocional img:hover {
-  transform: scale(1.03);
+/* Ajuste adicional para telas pequenas (celular) */
+@media (max-width: 768px) {
+  .titulo-devocional {
+    font-size: 1.6em;
+    line-height: 1.2; /* título mais compacto no celular */
+  }
 }
 </style>
 </head>
 <body>
-
 <header>
-  <img src="logo-umdedodefe.png" alt="Logo Um Dedo de Fé">
+  <img src="logo-umdedodefe.png" alt="Um Dedo de Fé">
 </header>
 
-<main id="conteudo-devocional">
-  <p style="text-align:center;">Carregando devocional...</p>
-</main>
+<!-- Aqui o devocional do dia será carregado -->
+<div id="devocional">Carregando devocional...</div>
 
 <footer>
-  <!-- Banner Promocional Dinâmico -->
-  <div class="banner-promocional">
-    <a href="#">
-      <img src="imagens/banner-promocional.jpg" alt="Banner Promocional">
-    </a>
-  </div>
-
-  <p style="margin-top: 20px;">
-    © <span id="ano"></span> Um Dedo de Fé — Todos os direitos reservados.<br>
-    Desenvolvido com 💛 para inspirar sua caminhada com Deus.
-  </p>
+  <p>© 2025 <strong>Um Dedo de Fé</strong> — por <a href="https://www.instagram.com/prwevertonquintino/" target="_blank">@prwevertonquintino</a></p>
 </footer>
 
 <script>
-  // Atualiza o ano automaticamente no rodapé
-  document.getElementById("ano").textContent = new Date().getFullYear();
+// JavaScript para carregar o devocional do dia
+const hoje = new Date();
+const ano = hoje.getFullYear();
+const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+const dia = String(hoje.getDate()).padStart(2, '0');
+const dataHoje = `${ano}-${mes}-${dia}`;
 
-  // Carrega o devocional do dia automaticamente
-  const hoje = new Date();
-  const dataFormatada = hoje.toISOString().split('T')[0];
-  fetch(`devocionais/${dataFormatada}.html`)
-    .then(res => res.ok ? res.text() : "<p style='text-align:center;'>Devocional ainda não disponível hoje.</p>")
-    .then(html => document.getElementById("conteudo-devocional").innerHTML = html);
+fetch(`devocionais/${dataHoje}.html`)
+  .then(r => {
+    if(!r.ok) throw new Error("Devocional não encontrado");
+    return r.text();
+  })
+  .then(html => {
+    document.getElementById('devocional').innerHTML = html;
+  })
+  .catch(err => {
+    document.getElementById('devocional').innerHTML = "<p>Ops! O devocional de hoje ainda não está disponível.</p>";
+    console.error(err);
+  });
 </script>
-
 </body>
 </html>
