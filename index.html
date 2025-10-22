@@ -1,195 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Devocional Diário • Um Dedo de Fé</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --marrom-escuro: #4b2a1a;
-  --marrom-claro: #7b4c27;
-  --dourado: #e1a640;
-  --bege-fundo: #efe2c3;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devocional Diário • Um Dedo de Fé</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5e6ca;
+      color: #4b2e05;
+      text-align: center;
+    }
 
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: var(--bege-fundo);
-  color: var(--marrom-escuro);
-  margin: 0;
-  padding: 0;
-  line-height: 1.8;
-}
+    header {
+      background-color: #f5e6ca;
+      padding: 20px 0 0 0;
+    }
 
-/* ===== HEADER ===== */
-header {
-  background-color: var(--bege-fundo);
-  text-align: center;
-  padding: 30px 0 10px;
-  border-bottom: 2px solid var(--dourado);
-}
+    .logo-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f5e6ca;
+    }
 
-header img {
-  width: 280px;
-  height: auto;
-  max-width: 90%;
-}
+    .logo-container img {
+      width: 90%;
+      max-width: 350px;
+      height: auto;
+    }
 
-/* ===== BANNER ===== */
-.banner-container {
-  text-align: center;
-  margin-top: 20px;
-}
+    .banner-topo {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f5e6ca;
+      margin-top: 10px;
+    }
 
-#banner-promocional {
-  width: 100%;
-  max-width: 700px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  transition: transform 0.2s ease;
-}
+    .banner-topo img {
+      width: 100%;
+      height: auto;
+      max-width: 700px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-#banner-promocional:hover {
-  transform: scale(1.02);
-}
+    main {
+      padding: 20px;
+    }
 
-/* ===== MAIN ===== */
-main {
-  max-width: 800px;
-  margin: 50px auto;
-  background: #fff8ef;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.05);
-}
+    .titulo-devocional {
+      font-size: 1.5em;
+      color: #4b2e05;
+      margin-top: 20px;
+    }
 
-h1 {
-  color: var(--marrom-escuro);
-  font-size: 1.9em;
-  margin-bottom: 10px;
-  text-align: center;
-}
+    .verse {
+      font-style: italic;
+      color: #5a3a07;
+      margin: 15px 0;
+    }
 
-.verse {
-  font-weight: 600;
-  color: var(--marrom-claro);
-  text-align: center;
-  margin-bottom: 20px;
-}
+    .date {
+      font-size: 0.9em;
+      color: #7a5b28;
+      margin-top: 15px;
+    }
 
-.content p {
-  margin-bottom: 20px;
-  font-size: 1.05em;
-}
-
-.content p strong {
-  color: var(--dourado);
-}
-
-.content p em {
-  color: var(--marrom-claro);
-  font-style: italic;
-}
-
-.reflection {
-  border-left: 4px solid var(--dourado);
-  padding-left: 16px;
-  margin: 30px 0;
-  background: #fff3e0;
-}
-
-.prayer {
-  background: #fef5e4;
-  padding: 16px;
-  border-radius: 10px;
-  margin-top: 25px;
-  border: 1px solid #f1c27d;
-}
-
-/* ===== FOOTER ===== */
-footer {
-  text-align: center;
-  font-size: 0.9em;
-  padding: 30px 0;
-  color: var(--marrom-claro);
-}
-
-footer a {
-  color: var(--dourado);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
-
-/* ===== RESPONSIVIDADE ===== */
-@media (max-width: 768px) {
-  header img {
-    width: 220px;
-  }
-
-  #banner-promocional {
-    max-width: 95%;
-    border-radius: 10px;
-  }
-
-  main {
-    margin: 30px 10px;
-    padding: 25px;
-  }
-
-  h1.titulo-devocional {
-    font-size: 1.6em;
-    line-height: 1.2;
-  }
-}
-</style>
+    footer {
+      background-color: #f5e6ca;
+      padding: 20px 0;
+      color: #4b2e05;
+      font-size: 0.9em;
+    }
+  </style>
 </head>
 <body>
-<header>
-  <img src="logo-umdedodefe.png" alt="Um Dedo de Fé">
 
-  <!-- Banner promocional -->
-  <div class="banner-container">
-    <a href="https://wa.me/5527999080664?text=Quero%20aproveitar%20a%20promo%C3%A7%C3%A3o" target="_blank" rel="noopener noreferrer">
-      <img id="banner-promocional" src="imagens/banner-promocional.jpg" alt="Banner promocional da caneca devocional">
-    </a>
-  </div>
-</header>
+  <header>
+    <div class="logo-container">
+      <img src="logo-umdedodefe.png" alt="Um Dedo de Fé">
+    </div>
 
-<!-- Aqui o devocional do dia será carregado -->
-<div id="devocional">Carregando devocional...</div>
+    <div class="banner-topo">
+      <img src="imagens/banner-promocional.jpg" alt="Banner Promocional - Caneca Devocional">
+    </div>
+  </header>
 
-<footer>
-  <p>© 2025 <strong>Um Dedo de Fé</strong> — por 
-    <a href="https://www.instagram.com/prwevertonquintino/" target="_blank">@prwevertonquintino</a>
-  </p>
-</footer>
+  <main>
+    <h1 class="titulo-devocional">Busque primeiro o Reino e confie no cuidado de Deus</h1>
+    <p class="verse">
+      "Buscai, pois, em primeiro lugar o Reino de Deus e a sua justiça, e todas estas coisas vos serão acrescentadas."<br>
+      — Mateus 6:33
+    </p>
+    <p class="date">22/10/2025</p>
+  </main>
 
-<script>
-// JavaScript para carregar o devocional do dia
-const hoje = new Date();
-const ano = hoje.getFullYear();
-const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-const dia = String(hoje.getDate()).padStart(2, '0');
-const dataHoje = `${ano}-${mes}-${dia}`;
+  <footer>
+    <p>© 2025 Um Dedo de Fé — Todos os direitos reservados.</p>
+  </footer>
 
-fetch(`devocionais/${dataHoje}.html`)
-  .then(r => {
-    if(!r.ok) throw new Error("Devocional não encontrado");
-    return r.text();
-  })
-  .then(html => {
-    document.getElementById('devocional').innerHTML = html;
-  })
-  .catch(err => {
-    document.getElementById('devocional').innerHTML = "<p>Ops! O devocional de hoje ainda não está disponível.</p>";
-    console.error(err);
-  });
-</script>
 </body>
 </html>
