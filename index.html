@@ -161,8 +161,9 @@ footer a:hover {
   </div>
 </header>
 
-<!-- Aqui o devocional do dia será carregado -->
-<div id="devocional">Carregando devocional...</div>
+<main id="devocional">
+  <p>Carregando seu devocional diário...</p>
+</main>
 
 <footer>
   <p>© 2025 <strong>Um Dedo de Fé</strong> — por 
@@ -171,25 +172,45 @@ footer a:hover {
 </footer>
 
 <script>
-// JavaScript para carregar o devocional do dia
-const hoje = new Date();
-const ano = hoje.getFullYear();
-const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-const dia = String(hoje.getDate()).padStart(2, '0');
-const dataHoje = `${ano}-${mes}-${dia}`;
+// === CONFIGURAÇÃO ===
+const totalDevocionais = 365;
 
-fetch(`devocionais/${dataHoje}.html`)
-  .then(r => {
-    if(!r.ok) throw new Error("Devocional não encontrado");
-    return r.text();
-  })
-  .then(html => {
-    document.getElementById('devocional').innerHTML = html;
-  })
-  .catch(err => {
-    document.getElementById('devocional').innerHTML = "<p>Ops! O devocional de hoje ainda não está disponível.</p>";
-    console.error(err);
-  });
+// Tenta obter a data de início salva
+let dataInicio = localStorage.getItem("dataInicioDevocional");
+
+if (!dataInicio) {
+  // Primeiro acesso: salva a data atual
+  dataInicio = new Date().toISOString();
+  localStorage.setItem("dataInicioDevocional", dataInicio);
+}
+
+// Calcula quantos dias se passaram desde o início
+const inicio = new Date(dataInicio);
+const hoje = new Date();
+const diff = Math.floor((hoje - inicio) / (1000 * 60 * 60 * 24)) + 1;
+
+// Determina o número do devocional atual
+let numeroDevocional = diff;
+
+// Se ultrapassou o total, vai para a página final
+if (numeroDevocional > totalDevocionais) {
+  window.location.href = "final.html";
+} else {
+  // Carrega o devocional correspondente
+  const caminho = `devocionais/devocional-${numeroDevocional}.html`;
+  fetch(caminho)
+    .then(r => {
+      if (!r.ok) throw new Error("Devocional não encontrado");
+      return r.text();
+    })
+    .then(html => {
+      document.getElementById("devocional").innerHTML = html;
+    })
+    .catch(err => {
+      document.getElementById("devocional").innerHTML = "<p>Ops! O devocional deste dia ainda não está disponível.</p>";
+      console.error(err);
+    });
+}
 </script>
 </body>
 </html>
