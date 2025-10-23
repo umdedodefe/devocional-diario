@@ -39,7 +39,7 @@ header img {
 /* ===== BANNER ===== */
 .banner-container {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 10px; /* menos espaço que antes */
 }
 
 #banner-promocional {
@@ -55,14 +55,11 @@ header img {
   transform: scale(1.02);
 }
 
-/* ===== MAIN ===== */
-main {
+/* ===== CONTEÚDO DO DEVOCIONAL ===== */
+#devocional {
   max-width: 800px;
-  margin: 50px auto;
-  background: #fff8ef;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.05);
+  margin: 20px auto 0 auto; /* reduzido o espaço acima */
+  padding: 0 5px; /* quase encostado nas bordas */
 }
 
 h1 {
@@ -137,9 +134,9 @@ footer a:hover {
     border-radius: 10px;
   }
 
-  main {
-    margin: 30px 10px;
-    padding: 25px;
+  #devocional {
+    margin: 15px 8px 0 8px; /* quase encostado nas bordas */
+    padding: 0;
   }
 
   h1.titulo-devocional {
@@ -161,9 +158,10 @@ footer a:hover {
   </div>
 </header>
 
-<main id="devocional">
-  <p>Carregando seu devocional diário...</p>
-</main>
+<!-- Área onde o devocional será carregado -->
+<div id="devocional">
+  <p style="text-align:center;">Carregando devocional...</p>
+</div>
 
 <footer>
   <p>© 2025 <strong>Um Dedo de Fé</strong> — por 
@@ -207,7 +205,7 @@ if (numeroDevocional > totalDevocionais) {
       document.getElementById("devocional").innerHTML = html;
     })
     .catch(err => {
-      document.getElementById("devocional").innerHTML = "<p>Ops! O devocional deste dia ainda não está disponível.</p>";
+      document.getElementById("devocional").innerHTML = "<p style='text-align:center;'>Ops! O devocional deste dia ainda não está disponível.</p>";
       console.error(err);
     });
 }
