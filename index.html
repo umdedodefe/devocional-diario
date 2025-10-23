@@ -39,7 +39,7 @@ header img {
 /* ===== BANNER ===== */
 .banner-container {
   text-align: center;
-  margin-top: 10px; /* menos espaço que antes */
+  margin-top: 20px;
 }
 
 #banner-promocional {
@@ -55,11 +55,14 @@ header img {
   transform: scale(1.02);
 }
 
-/* ===== CONTEÚDO DO DEVOCIONAL ===== */
-#devocional {
+/* ===== MAIN ===== */
+main {
   max-width: 800px;
-  margin: 20px auto 0 auto; /* reduzido o espaço acima */
-  padding: 0 5px; /* quase encostado nas bordas */
+  margin: 20px auto 0 auto; /* reduzido para ficar próximo ao banner */
+  background: #fff8ef;
+  padding: 20px; /* menos padding para mobile */
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.05);
 }
 
 h1 {
@@ -134,9 +137,9 @@ footer a:hover {
     border-radius: 10px;
   }
 
-  #devocional {
-    margin: 15px 8px 0 8px; /* quase encostado nas bordas */
-    padding: 0;
+  main {
+    margin: 10px 5px 0 5px; /* margem lateral mínima */
+    padding: 15px; /* padding reduzido */
   }
 
   h1.titulo-devocional {
@@ -158,10 +161,9 @@ footer a:hover {
   </div>
 </header>
 
-<!-- Área onde o devocional será carregado -->
-<div id="devocional">
+<main id="devocional">
   <p style="text-align:center;">Carregando devocional...</p>
-</div>
+</main>
 
 <footer>
   <p>© 2025 <strong>Um Dedo de Fé</strong> — por 
