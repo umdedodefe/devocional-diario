@@ -1,216 +1,203 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Devocional Diário • Um Dedo de Fé</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --marrom-escuro: #4b2a1a;
-  --marrom-claro: #7b4c27;
-  --dourado: #e1a640;
-  --bege-fundo: #efe2c3;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devocional Diário • Um Dedo de Fé</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --marrom-escuro: #4b2a1a;
+      --marrom-claro: #7b4c27;
+      --dourado: #e1a640;
+      --bege-fundo: #efe2c3;
+    }
 
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: var(--bege-fundo);
-  color: var(--marrom-escuro);
-  margin: 0;
-  padding: 0;
-  line-height: 1.8;
-}
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bege-fundo);
+      color: var(--marrom-escuro);
+      margin: 0;
+      padding: 0;
+      line-height: 1.8;
+    }
 
-/* ===== HEADER ===== */
-header {
-  background-color: var(--bege-fundo);
-  text-align: center;
-  padding: 30px 0 10px;
-  border-bottom: 2px solid var(--dourado);
-}
+    /* ===== HEADER ===== */
+    header {
+      background-color: var(--bege-fundo);
+      text-align: center;
+      padding: 20px 0 10px;
+      border-bottom: 2px solid var(--dourado);
+    }
 
-header img {
-  width: 280px;
-  height: auto;
-  max-width: 90%;
-}
+    /* ===== BANNER ===== */
+    .banner-container {
+      text-align: center;
+      margin: 0 auto;
+    }
 
-/* ===== BANNER ===== */
-.banner-container {
-  text-align: center;
-  margin-top: 20px;
-}
+    #banner-promocional {
+      width: 100%;
+      max-width: 700px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      transition: transform 0.2s ease;
+    }
 
-#banner-promocional {
-  width: 100%;
-  max-width: 700px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  transition: transform 0.2s ease;
-}
+    #banner-promocional:hover {
+      transform: scale(1.02);
+    }
 
-#banner-promocional:hover {
-  transform: scale(1.02);
-}
+    /* ===== MAIN ===== */
+    main {
+      max-width: 800px;
+      margin: 20px auto 0 auto;
+      background: #fff8ef;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.05);
+    }
 
-/* ===== MAIN ===== */
-main {
-  max-width: 800px;
-  margin: 20px auto 0 auto; /* reduzido para ficar próximo ao banner */
-  background: #fff8ef;
-  padding: 20px; /* menos padding para mobile */
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.05);
-}
+    h1 {
+      color: var(--marrom-escuro);
+      font-size: 1.9em;
+      margin-bottom: 10px;
+      text-align: center;
+    }
 
-h1 {
-  color: var(--marrom-escuro);
-  font-size: 1.9em;
-  margin-bottom: 10px;
-  text-align: center;
-}
+    .verse {
+      font-weight: 600;
+      color: var(--marrom-claro);
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-.verse {
-  font-weight: 600;
-  color: var(--marrom-claro);
-  text-align: center;
-  margin-bottom: 20px;
-}
+    .content p {
+      margin-bottom: 20px;
+      font-size: 1.05em;
+    }
 
-.content p {
-  margin-bottom: 20px;
-  font-size: 1.05em;
-}
+    .content p strong {
+      color: var(--dourado);
+    }
 
-.content p strong {
-  color: var(--dourado);
-}
+    .content p em {
+      color: var(--marrom-claro);
+      font-style: italic;
+    }
 
-.content p em {
-  color: var(--marrom-claro);
-  font-style: italic;
-}
+    .reflection {
+      border-left: 4px solid var(--dourado);
+      padding-left: 16px;
+      margin: 30px 0;
+      background: #fff3e0;
+    }
 
-.reflection {
-  border-left: 4px solid var(--dourado);
-  padding-left: 16px;
-  margin: 30px 0;
-  background: #fff3e0;
-}
+    .prayer {
+      background: #fef5e4;
+      padding: 16px;
+      border-radius: 10px;
+      margin-top: 25px;
+      border: 1px solid #f1c27d;
+    }
 
-.prayer {
-  background: #fef5e4;
-  padding: 16px;
-  border-radius: 10px;
-  margin-top: 25px;
-  border: 1px solid #f1c27d;
-}
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      padding: 30px 0;
+      color: var(--marrom-claro);
+    }
 
-/* ===== FOOTER ===== */
-footer {
-  text-align: center;
-  font-size: 0.9em;
-  padding: 30px 0;
-  color: var(--marrom-claro);
-}
+    footer a {
+      color: var(--dourado);
+      text-decoration: none;
+      font-weight: 600;
+    }
 
-footer a {
-  color: var(--dourado);
-  text-decoration: none;
-  font-weight: 600;
-}
+    footer a:hover {
+      text-decoration: underline;
+    }
 
-footer a:hover {
-  text-decoration: underline;
-}
+    /* ===== RESPONSIVIDADE ===== */
+    @media (max-width: 768px) {
+      #banner-promocional {
+        max-width: 95%;
+        border-radius: 10px;
+      }
 
-/* ===== RESPONSIVIDADE ===== */
-@media (max-width: 768px) {
-  header img {
-    width: 220px;
-  }
+      main {
+        margin: 10px 5px 0 5px;
+        padding: 15px;
+      }
 
-  #banner-promocional {
-    max-width: 95%;
-    border-radius: 10px;
-  }
-
-  main {
-    margin: 10px 5px 0 5px; /* margem lateral mínima */
-    padding: 15px; /* padding reduzido */
-  }
-
-  h1.titulo-devocional {
-    font-size: 1.6em;
-    line-height: 1.2;
-  }
-}
-</style>
+      h1.titulo-devocional {
+        font-size: 1.6em;
+        line-height: 1.2;
+      }
+    }
+  </style>
 </head>
 <body>
-<header>
-  <img src="logo-umdedodefe.png" alt="Um Dedo de Fé">
+  <header>
+    <!-- Apenas o banner promocional -->
+    <div class="banner-container">
+      <a href="https://wa.me/5527999080664?text=Quero%20aproveitar%20a%20promo%C3%A7%C3%A3o" target="_blank" rel="noopener noreferrer">
+        <img id="banner-promocional" src="imagens/banner-promocional.jpg" alt="Banner promocional da caneca devocional">
+      </a>
+    </div>
+  </header>
 
-  <!-- Banner promocional -->
-  <div class="banner-container">
-    <a href="https://wa.me/5527999080664?text=Quero%20aproveitar%20a%20promo%C3%A7%C3%A3o" target="_blank" rel="noopener noreferrer">
-      <img id="banner-promocional" src="imagens/banner-promocional.jpg" alt="Banner promocional da caneca devocional">
-    </a>
-  </div>
-</header>
+  <main id="devocional">
+    <p style="text-align:center;">Carregando devocional...</p>
+  </main>
 
-<main id="devocional">
-  <p style="text-align:center;">Carregando devocional...</p>
-</main>
+  <footer>
+    <p>© 2025 <strong>Um Dedo de Fé</strong> — por 
+      <a href="https://www.instagram.com/prwevertonquintino/" target="_blank">@prwevertonquintino</a>
+    </p>
+  </footer>
 
-<footer>
-  <p>© 2025 <strong>Um Dedo de Fé</strong> — por 
-    <a href="https://www.instagram.com/prwevertonquintino/" target="_blank">@prwevertonquintino</a>
-  </p>
-</footer>
+  <script>
+    // === CONFIGURAÇÃO ===
+    const totalDevocionais = 365;
 
-<script>
-// === CONFIGURAÇÃO ===
-const totalDevocionais = 365;
+    // Tenta obter a data de início salva
+    let dataInicio = localStorage.getItem("dataInicioDevocional");
+    if (!dataInicio) {
+      // Primeiro acesso: salva a data atual
+      dataInicio = new Date().toISOString();
+      localStorage.setItem("dataInicioDevocional", dataInicio);
+    }
 
-// Tenta obter a data de início salva
-let dataInicio = localStorage.getItem("dataInicioDevocional");
+    // Calcula quantos dias se passaram desde o início
+    const inicio = new Date(dataInicio);
+    const hoje = new Date();
+    const diff = Math.floor((hoje - inicio) / (1000 * 60 * 60 * 24)) + 1;
 
-if (!dataInicio) {
-  // Primeiro acesso: salva a data atual
-  dataInicio = new Date().toISOString();
-  localStorage.setItem("dataInicioDevocional", dataInicio);
-}
+    // Determina o número do devocional atual
+    let numeroDevocional = diff;
 
-// Calcula quantos dias se passaram desde o início
-const inicio = new Date(dataInicio);
-const hoje = new Date();
-const diff = Math.floor((hoje - inicio) / (1000 * 60 * 60 * 24)) + 1;
-
-// Determina o número do devocional atual
-let numeroDevocional = diff;
-
-// Se ultrapassou o total, vai para a página final
-if (numeroDevocional > totalDevocionais) {
-  window.location.href = "final.html";
-} else {
-  // Carrega o devocional correspondente
-  const caminho = `devocionais/devocional-${numeroDevocional}.html`;
-  fetch(caminho)
-    .then(r => {
-      if (!r.ok) throw new Error("Devocional não encontrado");
-      return r.text();
-    })
-    .then(html => {
-      document.getElementById("devocional").innerHTML = html;
-    })
-    .catch(err => {
-      document.getElementById("devocional").innerHTML = "<p style='text-align:center;'>Ops! O devocional deste dia ainda não está disponível.</p>";
-      console.error(err);
-    });
-}
-</script>
+    // Se ultrapassou o total, vai para a página final
+    if (numeroDevocional > totalDevocionais) {
+      window.location.href = "final.html";
+    } else {
+      // Carrega o devocional correspondente
+      const caminho = `devocionais/devocional-${numeroDevocional}.html`;
+      fetch(caminho)
+        .then(r => {
+          if (!r.ok) throw new Error("Devocional não encontrado");
+          return r.text();
+        })
+        .then(html => {
+          document.getElementById("devocional").innerHTML = html;
+        })
+        .catch(err => {
+          document.getElementById("devocional").innerHTML = "<p style='text-align:center;'>Ops! O devocional deste dia ainda não está disponível.</p>";
+          console.error(err);
+        });
+    }
+  </script>
 </body>
 </html>
