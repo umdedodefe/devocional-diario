@@ -161,16 +161,18 @@
   <script>
     const totalDevocionais = 365;
 
-    // === Recupera o progresso do usuário ===
-    let progresso = JSON.parse(localStorage.getItem("progressoDevocional"));
-
-    // Se não houver progresso, inicia do devocional 1
-    if (!progresso) {
-      progresso = { diaAtual: 1 };
-      localStorage.setItem("progressoDevocional", JSON.stringify(progresso));
+    // Obtém ou define a data de início da jornada
+    let dataInicio = localStorage.getItem("dataInicioDevocional");
+    if (!dataInicio) {
+      dataInicio = new Date().toISOString();
+      localStorage.setItem("dataInicioDevocional", dataInicio);
     }
 
-    let numeroDevocional = progresso.diaAtual;
+    const inicio = new Date(dataInicio);
+    const hoje = new Date();
+    const diff = Math.floor((hoje - inicio) / (1000 * 60 * 60 * 24)) + 1;
+
+    let numeroDevocional = diff;
 
     if (numeroDevocional > totalDevocionais) {
       window.location.href = "final.html";
@@ -184,28 +186,21 @@
         .then(html => {
           document.getElementById("devocional").innerHTML = html;
 
-          // === Preenche a data do devocional com base na sequência ===
-          const dataInicio = new Date("2025-05-01"); // Data de início geral (pode ajustar)
-          const dataDevocional = new Date(dataInicio);
-          dataDevocional.setDate(dataDevocional.getDate() + numeroDevocional - 1);
-          const dia = String(dataDevocional.getDate()).padStart(2, '0');
-          const mes = String(dataDevocional.getMonth() + 1).padStart(2, '0');
-          const ano = dataDevocional.getFullYear();
-          const pDate = document.querySelector("#devocional p.date");
-          if (pDate) pDate.textContent = `${dia}/${mes}/${ano}`;
+          // === INSERE A DATA CALCULADA NO DEVOCIONAL ===
+          const dataHoje = new Date(inicio);
+          dataHoje.setDate(dataHoje.getDate() + numeroDevocional - 1);
+          const dia = String(dataHoje.getDate()).padStart(2, '0');
+          const mes = String(dataHoje.getMonth() + 1).padStart(2, '0');
+          const ano = dataHoje.getFullYear();
+          const dataHojeFormatada = `${dia}/${mes}/${ano}`;
 
-          // === Atualiza automaticamente o progresso para o próximo devocional ===
-          if (numeroDevocional < totalDevocionais) {
-            progresso.diaAtual += 1;
-            localStorage.setItem("progressoDevocional", JSON.stringify(progresso));
-          } else {
-            // Último devocional
-            localStorage.removeItem("progressoDevocional");
+          const pDate = document.querySelector("#devocional p.date");
+          if (pDate) {
+            pDate.textContent = dataHojeFormatada;
           }
         })
         .catch(err => {
-          document.getElementById("devocional").innerHTML =
-            "<p style='text-align:center;'>Ops! O devocional deste dia ainda não está disponível.</p>";
+          document.getElementById("devocional").innerHTML = "<p style='text-align:center;'>Ops! O devocional deste dia ainda não está disponível.</p>";
           console.error(err);
         });
     }
