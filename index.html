@@ -49,10 +49,29 @@
       transform: scale(1.02);
     }
 
+    /* ===== BOTÃO PLAY ===== */
+    #btn-ouvir {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 1.05em;
+      background-color: var(--dourado);
+      color: var(--marrom-escuro);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+    }
+
+    #btn-ouvir:hover {
+      background-color: #d49b2f;
+    }
+
     /* ===== MAIN ===== */
     main {
       max-width: 800px;
-      margin: 20px auto 0 auto;
+      margin: 0 auto 20px auto;
       background: #fff8ef;
       padding: 20px;
       border-radius: 12px;
@@ -87,7 +106,7 @@
       font-style: italic;
     }
 
-    .reflection {
+    .reflection, .practical, .prayer {
       border-left: 4px solid var(--dourado);
       padding-left: 16px;
       margin: 30px 0;
@@ -96,10 +115,10 @@
 
     .prayer {
       background: #fef5e4;
+      border: 1px solid #f1c27d;
       padding: 16px;
       border-radius: 10px;
       margin-top: 25px;
-      border: 1px solid #f1c27d;
     }
 
     /* ===== FOOTER ===== */
@@ -147,6 +166,9 @@
       </a>
     </div>
   </header>
+
+  <!-- Botão de leitura -->
+  <button id="btn-ouvir">🔊 Ouvir devocional</button>
 
   <main id="devocional">
     <p style="text-align:center;">Carregando devocional...</p>
@@ -204,6 +226,57 @@
           console.error(err);
         });
     }
+
+    // === FUNÇÃO DE LEITURA DO DEVOCIONAL ===
+    function lerDevocional() {
+      const devocionalEl = document.getElementById("devocional");
+      if (!devocionalEl) return;
+
+      // Seleciona os elementos que devem ser lidos
+      const titulo = devocionalEl.querySelector("h1.titulo-devocional")?.innerText || "";
+      const versiculo = devocionalEl.querySelector("p.verse")?.innerText || "";
+
+      let conteudo = "";
+
+      // Conteúdo geral
+      devocionalEl.querySelectorAll(".content p").forEach(p => {
+        conteudo += p.innerText + " ";
+      });
+
+      // Aplicações práticas
+      devocionalEl.querySelectorAll(".reflection").forEach(sec => {
+        const tituloSec = sec.querySelector("h2")?.innerText || "";
+        if (tituloSec) conteudo += tituloSec + ". ";
+        sec.querySelectorAll("p").forEach(p => conteudo += p.innerText + " ");
+      });
+
+      // Oração
+      devocionalEl.querySelectorAll(".prayer").forEach(sec => {
+        const tituloSec = sec.querySelector("h2")?.innerText || "";
+        if (tituloSec) conteudo += tituloSec + ". ";
+        sec.querySelectorAll("p").forEach(p => conteudo += p.innerText + " ");
+      });
+
+      // Frase final logo abaixo da oração
+      const fraseFinal = devocionalEl.querySelector("p.final")?.innerText || "";
+      if (fraseFinal) conteudo += fraseFinal;
+
+      const textoCompleto = [titulo, versiculo, conteudo].join(". ");
+
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(textoCompleto);
+        utterance.lang = 'pt-BR';
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert("Desculpe, seu navegador não suporta a leitura em voz alta.");
+      }
+    }
+
+    // Adiciona o evento ao botão
+    document.getElementById("btn-ouvir").addEventListener("click", lerDevocional);
   </script>
 </body>
 </html>
