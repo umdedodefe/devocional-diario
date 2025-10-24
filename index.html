@@ -22,7 +22,6 @@
       line-height: 1.8;
     }
 
-    /* ===== HEADER ===== */
     header {
       background-color: var(--bege-fundo);
       text-align: center;
@@ -30,7 +29,6 @@
       border-bottom: 2px solid var(--dourado);
     }
 
-    /* ===== BANNER ===== */
     .banner-container {
       text-align: center;
       margin: 0 auto;
@@ -49,7 +47,6 @@
       transform: scale(1.02);
     }
 
-    /* ===== MAIN ===== */
     main {
       max-width: 800px;
       margin: 20px auto 0 auto;
@@ -102,7 +99,6 @@
       border: 1px solid #f1c27d;
     }
 
-    /* ===== FOOTER ===== */
     footer {
       text-align: center;
       font-size: 0.9em;
@@ -120,7 +116,6 @@
       text-decoration: underline;
     }
 
-    /* ===== RESPONSIVIDADE ===== */
     @media (max-width: 768px) {
       #banner-promocional {
         max-width: 95%;
@@ -158,20 +153,16 @@
     </p>
   </footer>
 
-  <!-- ===== SCRIPT ATUALIZADO (mantém tudo igual, apenas muda a lógica do progresso) ===== -->
   <script>
     const totalDevocionais = 365;
 
     // === Carrega o progresso salvo ===
     let progresso = JSON.parse(localStorage.getItem("progressoDevocional"));
-
-    // Se não houver progresso, começa do devocional 1
     if (!progresso) {
       progresso = { diaAtual: 1 };
       localStorage.setItem("progressoDevocional", JSON.stringify(progresso));
     }
 
-    // Define o número do devocional a ser carregado
     let numeroDevocional = progresso.diaAtual;
 
     if (numeroDevocional > totalDevocionais) {
@@ -195,7 +186,7 @@
           const pDate = document.querySelector("#devocional p.date");
           if (pDate) pDate.textContent = dataFormatada;
 
-          // === Adiciona botão "Próximo Devocional" ===
+          // === Botão Próximo Devocional ===
           const botaoProximo = document.createElement("button");
           botaoProximo.textContent = "Próximo Devocional";
           botaoProximo.style.display = "block";
@@ -210,6 +201,55 @@
           botaoProximo.style.fontWeight = "600";
           botaoProximo.onclick = proximoDevocional;
           document.getElementById("devocional").appendChild(botaoProximo);
+
+          // === Botão Ouvir Devocional ===
+          const btnOuvir = document.createElement("button");
+          btnOuvir.textContent = "🔊 Ouvir Devocional";
+          btnOuvir.style.display = "block";
+          btnOuvir.style.margin = "15px auto";
+          btnOuvir.style.padding = "10px 20px";
+          btnOuvir.style.fontSize = "1em";
+          btnOuvir.style.backgroundColor = "#e1a640";
+          btnOuvir.style.color = "#fff";
+          btnOuvir.style.border = "none";
+          btnOuvir.style.borderRadius = "8px";
+          btnOuvir.style.cursor = "pointer";
+          btnOuvir.style.fontWeight = "600";
+          document.getElementById("devocional").appendChild(btnOuvir);
+
+          let narrando = false;
+          let utterance;
+
+          btnOuvir.addEventListener("click", () => {
+            if (!narrando) {
+              const titulo = document.querySelector("#devocional h1.titulo-devocional")?.innerText || "";
+              const versiculo = document.querySelector("#devocional p.verse")?.innerText || "";
+              const conteudo = Array.from(document.querySelectorAll("#devocional .content > p")).map(p => p.innerText).join(". ");
+              const aplicacoes = document.querySelector("#devocional .practical p")?.innerText || "";
+              const oracao = document.querySelector("#devocional .prayer p")?.innerText || "";
+              const fraseFinal = Array.from(document.querySelectorAll("#devocional .content > p")).pop()?.innerText || "";
+
+              const textoCompleto = `${titulo}. ${versiculo}. ${conteudo}. ${aplicacoes}. ${oracao}. ${fraseFinal}`;
+
+              utterance = new SpeechSynthesisUtterance(textoCompleto);
+              utterance.lang = "pt-BR";
+              utterance.rate = 1;
+              utterance.pitch = 1;
+              speechSynthesis.speak(utterance);
+
+              narrando = true;
+              btnOuvir.textContent = "⏸️ Pausar Leitura";
+
+              utterance.onend = () => {
+                narrando = false;
+                btnOuvir.textContent = "🔊 Ouvir Devocional";
+              };
+            } else {
+              speechSynthesis.cancel();
+              narrando = false;
+              btnOuvir.textContent = "🔊 Ouvir Devocional";
+            }
+          });
         })
         .catch(err => {
           document.getElementById("devocional").innerHTML =
@@ -218,7 +258,6 @@
         });
     }
 
-    // === Função para ir ao próximo devocional ===
     function proximoDevocional() {
       let progresso = JSON.parse(localStorage.getItem("progressoDevocional"));
       progresso.diaAtual = (progresso.diaAtual || 1) + 1;
@@ -227,10 +266,4 @@
         localStorage.removeItem("progressoDevocional");
         window.location.href = "final.html";
       } else {
-        localStorage.setItem("progressoDevocional", JSON.stringify(progresso));
-        location.reload(); // Recarrega a página para mostrar o próximo
-      }
-    }
-  </script>
-</body>
-</html>
+        localStorage.setItem("progres
