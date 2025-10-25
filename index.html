@@ -287,6 +287,29 @@ function lerDevocional() {
     
     // Botão de leitura
     document.getElementById("btn-ouvir").addEventListener("click", lerDevocional);
+    // === FORMATA AUTOMATICAMENTE AS APLICAÇÕES PRÁTICAS ===
+function formatarAplicacoesPraticas() {
+  const bloco = document.querySelector(".practical p");
+  if (!bloco) return;
+
+  let html = bloco.innerHTML;
+
+  // Extrai o título
+  const titulo = html.match(/<strong>[^<]+<\/strong>/)?.[0] || "<strong>Aplicações práticas:</strong>";
+
+  // Remove o título do restante do texto
+  let texto = html.replace(/<strong>[^<]+<\/strong>/, "").trim();
+
+  // Se contiver "1)", "2)" ou "3)", transforma em lista
+  if (texto.match(/\d\)/)) {
+    const itens = texto.split(/\d\)\s*/).filter(t => t.trim() !== "");
+    const lista = itens.map(item => `<li>${item.trim()}</li>`).join("");
+    bloco.innerHTML = `${titulo}<ol>${lista}</ol>`;
+  }
+}
+
+// Aplica a formatação após carregar o devocional
+setTimeout(formatarAplicacoesPraticas, 500);
   </script>
 </body>
 </html>
