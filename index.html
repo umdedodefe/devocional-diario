@@ -238,49 +238,53 @@
     }
 
     // === FUNÇÃO DE LEITURA CORRIGIDA ===
-    function lerDevocional() {
-      const devocionalEl = document.getElementById("devocional");
-      if (!devocionalEl) return;
+function lerDevocional() {
+  const devocionalEl = document.getElementById("devocional");
+  if (!devocionalEl) return;
 
-      const titulo = devocionalEl.querySelector("h1.titulo-devocional")?.innerText || "";
-      let versiculo = devocionalEl.querySelector("p.verse")?.innerText || "";
+  const titulo = devocionalEl.querySelector("h1.titulo-devocional")?.innerText || "";
+  let versiculo = devocionalEl.querySelector("p.verse")?.innerText || "";
 
-      // Corrige referência bíblica: "6.23" -> "capítulo 6, versículo 23"
-      versiculo = versiculo.replace(/(\d+)\.(\d+)/g, "capítulo $1, versículo $2");
+  // Corrige referência bíblica: "6.23" -> "capítulo 6, versículo 23"
+  versiculo = versiculo.replace(/(\d+)\.(\d+)/g, "capítulo $1, versículo $2");
 
-      let conteudo = "";
+  let conteudo = "";
 
-      // 1️⃣ Conteúdo principal (todos os <p> antes de practical e prayer)
-      devocionalEl.querySelectorAll(".content > p:not(.final)").forEach(p => {
-        conteudo += p.innerText + " ";
-      });
+  // 1️⃣ Seleciona apenas os parágrafos até antes da oração,
+  //    excluindo a última frase final (identificada por posição)
+  const paragrafos = Array.from(devocionalEl.querySelectorAll(".content > p"));
+  if (paragrafos.length > 1) {
+    paragrafos.slice(0, -1).forEach(p => {
+      conteudo += p.innerText + " ";
+    });
+  }
 
-      // 2️⃣ Aplicações práticas (uma única vez)
-      const aplicacao = devocionalEl.querySelector(".practical");
-      if (aplicacao) conteudo += aplicacao.innerText + " ";
+  // 2️⃣ Aplicações práticas
+  const aplicacao = devocionalEl.querySelector(".practical");
+  if (aplicacao) conteudo += aplicacao.innerText + " ";
 
-      // 3️⃣ Oração (uma única vez)
-      const oracao = devocionalEl.querySelector(".prayer");
-      if (oracao) conteudo += oracao.innerText + " ";
+  // 3️⃣ Oração
+  const oracao = devocionalEl.querySelector(".prayer");
+  if (oracao) conteudo += oracao.innerText + " ";
 
-      // 4️⃣ Última frase (apenas aqui, após oração)
-      const ultimaFrase = devocionalEl.querySelector(".content > p:last-of-type")?.innerText || "";
-      if (ultimaFrase && !ultimaFrase.includes("Oração:")) conteudo += ultimaFrase;
+  // 4️⃣ Última frase (somente aqui, após a oração)
+  const ultimaFrase = paragrafos[paragrafos.length - 1]?.innerText || "";
+  if (ultimaFrase && !ultimaFrase.includes("Oração:")) conteudo += ultimaFrase;
 
-      const textoCompleto = [titulo, versiculo, conteudo].join(". ");
+  const textoCompleto = [titulo, versiculo, conteudo].join(". ");
 
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(textoCompleto);
-        utterance.lang = 'pt-BR';
-        utterance.rate = 1;
-        utterance.pitch = 1;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(utterance);
-      } else {
-        alert("Desculpe, seu navegador não suporta a leitura em voz alta.");
-      }
-    }
-
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(textoCompleto);
+    utterance.lang = 'pt-BR';
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  } else {
+    alert("Desculpe, seu navegador não suporta a leitura em voz alta.");
+  }
+}
+    
     // Botão de leitura
     document.getElementById("btn-ouvir").addEventListener("click", lerDevocional);
   </script>
