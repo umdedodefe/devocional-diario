@@ -111,7 +111,8 @@
       font-style: italic;
     }
 
-    .reflection, .practical, .prayer {
+    /* ===== BLOCO REFLEXÃO, APLICAÇÕES PRÁTICAS E ORAÇÃO ===== */
+.reflection, .practical, .prayer {
   border-left: 4px solid var(--dourado);
   padding-left: 16px;
   margin: 30px 0;
@@ -122,15 +123,27 @@
 .practical {
   text-align: justify;       /* texto justificado */
   hyphens: auto;             /* hifenização automática */
-  -webkit-hyphens: auto;     /* suporte Safari/Chrome */
-  -ms-hyphens: auto;         /* suporte IE */
+  -webkit-hyphens: auto;     
+  -ms-hyphens: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-left: 16px;
+  border-left: 4px solid var(--dourado);
+  background: #fff3e0;
 }
 
-/* Título "Aplicações práticas" centralizado */
+/* Centraliza o título "Aplicações práticas" */
 .practical p:first-child strong {
-  display: block;            /* força ocupar linha inteira */
-  text-align: center;        /* centraliza o título */
-  margin-bottom: 10px;       /* espaço entre título e o texto */
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Faz os itens 1), 2), 3) ficarem em linhas separadas automaticamente */
+.practical p:not(:first-child) {
+  display: block;
+  margin: 5px 0;
+  text-indent: 1.5em;
 }
 
     .prayer {
