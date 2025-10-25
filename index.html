@@ -190,7 +190,7 @@
       localStorage.setItem("dataInicioDevocional", dataInicio);
     }
 
-    // === NOVA LÓGICA: controle de progresso individual ===
+    // === CONTROLE DE PROGRESSO ===
     let numeroDevocional = localStorage.getItem("numeroDevocional");
 
     if (!numeroDevocional) {
@@ -198,7 +198,6 @@
       localStorage.setItem("numeroDevocional", numeroDevocional);
       localStorage.setItem("ultimaDataAcesso", new Date().toDateString());
     } else {
-      // Só avança um devocional por dia de acesso
       const ultimaData = localStorage.getItem("ultimaDataAcesso");
       const hojeStr = new Date().toDateString();
 
@@ -222,7 +221,7 @@
         .then(html => {
           document.getElementById("devocional").innerHTML = html;
 
-          // === INSERE A DATA DO DIA ATUAL NO DEVOCIONAL ===
+          // Insere a data do dia atual
           const agora = new Date();
           const dia = String(agora.getDate()).padStart(2, '0');
           const mes = String(agora.getMonth() + 1).padStart(2, '0');
@@ -230,9 +229,7 @@
           const dataHojeFormatada = `${dia}/${mes}/${ano}`;
 
           const pDate = document.querySelector("#devocional p.date");
-          if (pDate) {
-            pDate.textContent = dataHojeFormatada;
-          }
+          if (pDate) pDate.textContent = dataHojeFormatada;
         })
         .catch(err => {
           document.getElementById("devocional").innerHTML = "<p style='text-align:center;'>Ops! O devocional deste dia ainda não está disponível.</p>";
@@ -240,39 +237,35 @@
         });
     }
 
-    // === FUNÇÃO DE LEITURA DO DEVOCIONAL ===
+    // === FUNÇÃO DE LEITURA CORRIGIDA ===
     function lerDevocional() {
       const devocionalEl = document.getElementById("devocional");
       if (!devocionalEl) return;
 
-      // Seleciona os elementos que devem ser lidos
       const titulo = devocionalEl.querySelector("h1.titulo-devocional")?.innerText || "";
-      const versiculo = devocionalEl.querySelector("p.verse")?.innerText || "";
+      let versiculo = devocionalEl.querySelector("p.verse")?.innerText || "";
+
+      // Corrige referência bíblica
+      versiculo = versiculo.replace(/(\d+)\.(\d+)/g, "capítulo $1, versículo $2");
 
       let conteudo = "";
 
-      // Conteúdo geral
-      devocionalEl.querySelectorAll(".content p").forEach(p => {
+      // Conteúdo principal
+      devocionalEl.querySelectorAll(".content > p").forEach(p => {
         conteudo += p.innerText + " ";
       });
 
       // Aplicações práticas
-      devocionalEl.querySelectorAll(".reflection, .practical").forEach(sec => {
-        const tituloSec = sec.querySelector("h2")?.innerText || "";
-        if (tituloSec) conteudo += tituloSec + ". ";
-        sec.querySelectorAll("p").forEach(p => conteudo += p.innerText + " ");
-      });
+      const aplicacao = devocionalEl.querySelector(".practical");
+      if (aplicacao) conteudo += aplicacao.innerText + " ";
 
       // Oração
-      devocionalEl.querySelectorAll(".prayer").forEach(sec => {
-        const tituloSec = sec.querySelector("h2")?.innerText || "";
-        if (tituloSec) conteudo += tituloSec + ". ";
-        sec.querySelectorAll("p").forEach(p => conteudo += p.innerText + " ");
-      });
+      const oracao = devocionalEl.querySelector(".prayer");
+      if (oracao) conteudo += oracao.innerText + " ";
 
-      // Frase final logo abaixo da oração
-      const fraseFinal = devocionalEl.querySelector("p.final")?.innerText || "";
-      if (fraseFinal) conteudo += fraseFinal;
+      // Última frase (caso exista e não seja parte da oração)
+      const ultimaFrase = devocionalEl.querySelector(".content > p:last-of-type")?.innerText || "";
+      if (ultimaFrase && !ultimaFrase.includes("Oração:")) conteudo += ultimaFrase;
 
       const textoCompleto = [titulo, versiculo, conteudo].join(". ");
 
@@ -288,7 +281,6 @@
       }
     }
 
-    // Adiciona o evento ao botão
     document.getElementById("btn-ouvir").addEventListener("click", lerDevocional);
   </script>
 </body>
