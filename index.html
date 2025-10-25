@@ -95,7 +95,10 @@
     .content p {
   margin-bottom: 20px;
   font-size: 1.05em;
-  text-align: justify; /* <-- esta linha foi adicionada */
+  text-align: justify;      /* texto justificado */
+  hyphens: auto;            /* habilita hifenização automática */
+  -webkit-hyphens: auto;    /* suporte para Safari/Chrome */
+  -ms-hyphens: auto;        /* suporte para IE */
 }
 
     .content p strong {
