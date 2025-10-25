@@ -93,9 +93,14 @@
     }
 
     .content p {
-      margin-bottom: 20px;
-      font-size: 1.05em;
-    }
+  margin-bottom: 20px;
+  font-size: 1.05em;
+  text-align: justify;      /* texto justificado */
+  hyphens: auto;            /* hifenização automática */
+  -webkit-hyphens: auto;    /* suporte Safari/Chrome */
+  -ms-hyphens: auto;        /* suporte IE */
+  text-indent: 1.2em;       /* recuo na primeira linha do parágrafo */
+}
 
     .content p strong {
       color: var(--dourado);
