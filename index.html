@@ -190,12 +190,26 @@
       localStorage.setItem("dataInicioDevocional", dataInicio);
     }
 
-    const inicio = new Date(dataInicio);
-    const hoje = new Date();
-    const diff = Math.floor((hoje - inicio) / (1000 * 60 * 60 * 24)) + 1;
+    // === NOVA LÓGICA: controle de progresso individual ===
+    let numeroDevocional = localStorage.getItem("numeroDevocional");
 
-    let numeroDevocional = diff;
+    if (!numeroDevocional) {
+      numeroDevocional = 1;
+      localStorage.setItem("numeroDevocional", numeroDevocional);
+      localStorage.setItem("ultimaDataAcesso", new Date().toDateString());
+    } else {
+      // Só avança um devocional por dia de acesso
+      const ultimaData = localStorage.getItem("ultimaDataAcesso");
+      const hojeStr = new Date().toDateString();
 
+      if (ultimaData !== hojeStr) {
+        numeroDevocional = parseInt(numeroDevocional) + 1;
+        localStorage.setItem("numeroDevocional", numeroDevocional);
+        localStorage.setItem("ultimaDataAcesso", hojeStr);
+      }
+    }
+
+    // Carrega o devocional correspondente
     if (numeroDevocional > totalDevocionais) {
       window.location.href = "final.html";
     } else {
@@ -208,12 +222,11 @@
         .then(html => {
           document.getElementById("devocional").innerHTML = html;
 
-          // === INSERE A DATA CALCULADA NO DEVOCIONAL ===
-          const dataHoje = new Date(inicio);
-          dataHoje.setDate(dataHoje.getDate() + numeroDevocional - 1);
-          const dia = String(dataHoje.getDate()).padStart(2, '0');
-          const mes = String(dataHoje.getMonth() + 1).padStart(2, '0');
-          const ano = dataHoje.getFullYear();
+          // === INSERE A DATA DO DIA ATUAL NO DEVOCIONAL ===
+          const agora = new Date();
+          const dia = String(agora.getDate()).padStart(2, '0');
+          const mes = String(agora.getMonth() + 1).padStart(2, '0');
+          const ano = agora.getFullYear();
           const dataHojeFormatada = `${dia}/${mes}/${ano}`;
 
           const pDate = document.querySelector("#devocional p.date");
@@ -244,7 +257,7 @@
       });
 
       // Aplicações práticas
-      devocionalEl.querySelectorAll(".reflection").forEach(sec => {
+      devocionalEl.querySelectorAll(".reflection, .practical").forEach(sec => {
         const tituloSec = sec.querySelector("h2")?.innerText || "";
         if (tituloSec) conteudo += tituloSec + ". ";
         sec.querySelectorAll("p").forEach(p => conteudo += p.innerText + " ");
