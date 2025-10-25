@@ -95,11 +95,6 @@
     .content p {
       margin-bottom: 20px;
       font-size: 1.05em;
-      text-align: justify;
-      hyphens: auto;
-      -webkit-hyphens: auto;
-      -ms-hyphens: auto;
-      text-indent: 1.2em;
     }
 
     .content p strong {
@@ -111,7 +106,6 @@
       font-style: italic;
     }
 
-    /* ===== BLOCO REFLEXÃO, APLICAÇÕES PRÁTICAS E ORAÇÃO ===== */
     .reflection, .practical, .prayer {
       border-left: 4px solid var(--dourado);
       padding-left: 16px;
@@ -119,43 +113,6 @@
       background: #fff3e0;
     }
 
-    /* ===== BLOCO APLICAÇÕES PRÁTICAS ===== */
-    .practical {
-      text-align: justify;
-      hyphens: auto;
-      -webkit-hyphens: auto;     
-      -ms-hyphens: auto;
-      margin-top: 30px;
-      margin-bottom: 30px;
-      padding-left: 16px;
-      border-left: 4px solid var(--dourado);
-      background: #fff3e0;
-    }
-
-    /* Centraliza o título "Aplicações práticas" */
-    .practical p:first-child strong {
-      display: block;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    /* Lista 1),2),3) justificada e hifenizada */
-    .practical ol {
-      text-align: justify;      
-      hyphens: auto;            
-      -webkit-hyphens: auto;    
-      -ms-hyphens: auto;        
-      padding-left: 1.2em;
-      margin-top: 5px;
-      margin-bottom: 10px;
-    }
-
-    .practical ol li {
-      margin-bottom: 0.5em;
-      text-indent: 1.2em;
-    }
-
-    /* ===== BLOCO ORAÇÃO ===== */
     .prayer {
       background: #fef5e4;
       border: 1px solid #f1c27d;
@@ -163,16 +120,6 @@
       border-radius: 10px;
       margin-top: 25px;
     }
-
-    .prayer p:first-child {
-      text-align: center;  /* título centralizado */
-      font-weight: bold;
-    }
-    .prayer p:not(:first-child) {
-  font-weight: normal;  /* remove negrito do texto da oração */
-  text-align: center;   /* mantém centralizado */
-  margin-top: 10px;     /* garante separação do título */
-}
 
     /* ===== FOOTER ===== */
     footer {
@@ -245,6 +192,7 @@
 
     // === CONTROLE DE PROGRESSO ===
     let numeroDevocional = localStorage.getItem("numeroDevocional");
+
     if (!numeroDevocional) {
       numeroDevocional = 1;
       localStorage.setItem("numeroDevocional", numeroDevocional);
@@ -252,6 +200,7 @@
     } else {
       const ultimaData = localStorage.getItem("ultimaDataAcesso");
       const hojeStr = new Date().toDateString();
+
       if (ultimaData !== hojeStr) {
         numeroDevocional = parseInt(numeroDevocional) + 1;
         localStorage.setItem("numeroDevocional", numeroDevocional);
@@ -278,12 +227,9 @@
           const mes = String(agora.getMonth() + 1).padStart(2, '0');
           const ano = agora.getFullYear();
           const dataHojeFormatada = `${dia}/${mes}/${ano}`;
+
           const pDate = document.querySelector("#devocional p.date");
           if (pDate) pDate.textContent = dataHojeFormatada;
-
-          // Formata aplicações práticas e oração
-          formatarAplicacoesPraticas();
-          setTimeout(formatarOracao, 200);
         })
         .catch(err => {
           document.getElementById("devocional").innerHTML = "<p style='text-align:center;'>Ops! O devocional deste dia ainda não está disponível.</p>";
@@ -291,70 +237,56 @@
         });
     }
 
-    // === FUNÇÃO DE LEITURA ===
-    function lerDevocional() {
-      const devocionalEl = document.getElementById("devocional");
-      if (!devocionalEl) return;
+    // === FUNÇÃO DE LEITURA CORRIGIDA ===
+function lerDevocional() {
+  const devocionalEl = document.getElementById("devocional");
+  if (!devocionalEl) return;
 
-      const titulo = devocionalEl.querySelector("h1.titulo-devocional")?.innerText || "";
-      let versiculo = devocionalEl.querySelector("p.verse")?.innerText || "";
-      versiculo = versiculo.replace(/(\d+)\.(\d+)/g, "capítulo $1, versículo $2");
+  const titulo = devocionalEl.querySelector("h1.titulo-devocional")?.innerText || "";
+  let versiculo = devocionalEl.querySelector("p.verse")?.innerText || "";
 
-      let conteudo = "";
-      const paragrafos = Array.from(devocionalEl.querySelectorAll(".content > p"));
-      if (paragrafos.length > 1) {
-        paragrafos.slice(0, -1).forEach(p => { conteudo += p.innerText + " "; });
-      }
+  // Corrige referência bíblica: "6.23" -> "capítulo 6, versículo 23"
+  versiculo = versiculo.replace(/(\d+)\.(\d+)/g, "capítulo $1, versículo $2");
 
-      const aplicacao = devocionalEl.querySelector(".practical");
-      if (aplicacao) conteudo += aplicacao.innerText + " ";
+  let conteudo = "";
 
-      const oracao = devocionalEl.querySelector(".prayer");
-      if (oracao) conteudo += oracao.innerText + " ";
+  // 1️⃣ Seleciona apenas os parágrafos até antes da oração,
+  //    excluindo a última frase final (identificada por posição)
+  const paragrafos = Array.from(devocionalEl.querySelectorAll(".content > p"));
+  if (paragrafos.length > 1) {
+    paragrafos.slice(0, -1).forEach(p => {
+      conteudo += p.innerText + " ";
+    });
+  }
 
-      const ultimaFrase = paragrafos[paragrafos.length - 1]?.innerText || "";
-      if (ultimaFrase && !ultimaFrase.includes("Oração:")) conteudo += ultimaFrase;
+  // 2️⃣ Aplicações práticas
+  const aplicacao = devocionalEl.querySelector(".practical");
+  if (aplicacao) conteudo += aplicacao.innerText + " ";
 
-      const textoCompleto = [titulo, versiculo, conteudo].join(". ");
+  // 3️⃣ Oração
+  const oracao = devocionalEl.querySelector(".prayer");
+  if (oracao) conteudo += oracao.innerText + " ";
 
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(textoCompleto);
-        utterance.lang = 'pt-BR';
-        utterance.rate = 1;
-        utterance.pitch = 1;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(utterance);
-      } else {
-        alert("Desculpe, seu navegador não suporta a leitura em voz alta.");
-      }
-    }
+  // 4️⃣ Última frase (somente aqui, após a oração)
+  const ultimaFrase = paragrafos[paragrafos.length - 1]?.innerText || "";
+  if (ultimaFrase && !ultimaFrase.includes("Oração:")) conteudo += ultimaFrase;
 
+  const textoCompleto = [titulo, versiculo, conteudo].join(". ");
+
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(textoCompleto);
+    utterance.lang = 'pt-BR';
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  } else {
+    alert("Desculpe, seu navegador não suporta a leitura em voz alta.");
+  }
+}
+
+    // Botão de leitura
     document.getElementById("btn-ouvir").addEventListener("click", lerDevocional);
-
-    // === FORMATAÇÕES AUTOMÁTICAS ===
-    function formatarAplicacoesPraticas() {
-      const bloco = document.querySelector(".practical p");
-      if (!bloco) return;
-
-      let html = bloco.innerHTML;
-      const titulo = html.match(/<strong>[^<]+<\/strong>/)?.[0] || "<strong>Aplicações práticas:</strong>";
-      let texto = html.replace(/<strong>[^<]+<\/strong>/, "").trim();
-
-      if (texto.match(/\d\)/)) {
-        const itens = texto.split(/\d\)\s*/).filter(t => t.trim() !== "");
-        const lista = itens.map(item => `<li>${item.trim()}</li>`).join("");
-        bloco.innerHTML = `${titulo}<ol>${lista}</ol>`;
-      }
-    }
-
-    function formatarOracao() {
-      const oracao = document.querySelector(".prayer p:not(:first-child)");
-      if (!oracao) return;
-      if (!oracao.textContent.startsWith('"')) {
-        oracao.textContent = `"${oracao.textContent}"`;
-      }
-      oracao.style.textAlign = "center";
-    }
   </script>
 </body>
 </html>
