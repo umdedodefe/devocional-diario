@@ -168,7 +168,12 @@
   </header>
 
   <!-- Botão de leitura -->
-  <button id="btn-ouvir">🔊 Ouvir devocional</button>
+  <!-- Player de leitura -->
+<div class="audio-player">
+  <button id="playPauseBtn" class="player-btn">▶</button>
+  <input type="range" id="progressBar" value="0" min="0" max="100" step="1">
+  <span id="timeDisplay">00:00</span>
+</div>
 
   <main id="devocional">
     <p style="text-align:center;">Carregando devocional...</p>
