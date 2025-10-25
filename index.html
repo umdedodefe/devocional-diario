@@ -245,25 +245,25 @@
       const titulo = devocionalEl.querySelector("h1.titulo-devocional")?.innerText || "";
       let versiculo = devocionalEl.querySelector("p.verse")?.innerText || "";
 
-      // Corrige referência bíblica
+      // Corrige referência bíblica: "6.23" -> "capítulo 6, versículo 23"
       versiculo = versiculo.replace(/(\d+)\.(\d+)/g, "capítulo $1, versículo $2");
 
       let conteudo = "";
 
-      // Conteúdo principal
-      devocionalEl.querySelectorAll(".content > p").forEach(p => {
+      // 1️⃣ Conteúdo principal (todos os <p> antes de practical e prayer)
+      devocionalEl.querySelectorAll(".content > p:not(.final)").forEach(p => {
         conteudo += p.innerText + " ";
       });
 
-      // Aplicações práticas
+      // 2️⃣ Aplicações práticas (uma única vez)
       const aplicacao = devocionalEl.querySelector(".practical");
       if (aplicacao) conteudo += aplicacao.innerText + " ";
 
-      // Oração
+      // 3️⃣ Oração (uma única vez)
       const oracao = devocionalEl.querySelector(".prayer");
       if (oracao) conteudo += oracao.innerText + " ";
 
-      // Última frase (caso exista e não seja parte da oração)
+      // 4️⃣ Última frase (apenas aqui, após oração)
       const ultimaFrase = devocionalEl.querySelector(".content > p:last-of-type")?.innerText || "";
       if (ultimaFrase && !ultimaFrase.includes("Oração:")) conteudo += ultimaFrase;
 
@@ -281,6 +281,7 @@
       }
     }
 
+    // Botão de leitura
     document.getElementById("btn-ouvir").addEventListener("click", lerDevocional);
   </script>
 </body>
