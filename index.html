@@ -112,11 +112,26 @@
     }
 
     .reflection, .practical, .prayer {
-      border-left: 4px solid var(--dourado);
-      padding-left: 16px;
-      margin: 30px 0;
-      background: #fff3e0;
-    }
+  border-left: 4px solid var(--dourado);
+  padding-left: 16px;
+  margin: 30px 0;
+  background: #fff3e0;
+}
+
+/* ===== BLOCO APLICAÇÕES PRÁTICAS ===== */
+.practical {
+  text-align: justify;       /* texto justificado */
+  hyphens: auto;             /* hifenização automática */
+  -webkit-hyphens: auto;     /* suporte Safari/Chrome */
+  -ms-hyphens: auto;         /* suporte IE */
+}
+
+/* Título "Aplicações práticas" centralizado */
+.practical p:first-child strong {
+  display: block;            /* força ocupar linha inteira */
+  text-align: center;        /* centraliza o título */
+  margin-bottom: 10px;       /* espaço entre título e o texto */
+}
 
     .prayer {
       background: #fef5e4;
