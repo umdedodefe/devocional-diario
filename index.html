@@ -246,22 +246,25 @@
         });
     }
 
-    // === FUNÇÃO DE LEITURA COM PAUSAR E RETOMAR ===
+    // === LEITURA COM PAUSAR, RETOMAR E REINICIAR FUNCIONANDO EM TODOS OS NAVEGADORES ===
 let utterance;
 let estaLendo = false;
 let estaPausado = false;
+let textoCompleto = "";
 
 function lerDevocional() {
   const devocionalEl = document.getElementById("devocional");
   const botao = document.getElementById("btn-ouvir");
 
-  // Se já está lendo, permite pausar ou retomar
+  // Se já está lendo, permite pausar, retomar ou parar
   if (estaLendo) {
     if (estaPausado) {
+      // Retomar leitura
       window.speechSynthesis.resume();
       estaPausado = false;
       botao.textContent = "⏸️ Pausar leitura";
     } else {
+      // Pausar leitura
       window.speechSynthesis.pause();
       estaPausado = true;
       botao.textContent = "▶️ Retomar leitura";
@@ -293,7 +296,7 @@ function lerDevocional() {
   const ultimaFrase = paragrafos[paragrafos.length - 1]?.innerText || "";
   if (ultimaFrase && !ultimaFrase.includes("Oração:")) conteudo += ultimaFrase;
 
-  const textoCompleto = [titulo, versiculo, conteudo].join(". ");
+  textoCompleto = [titulo, versiculo, conteudo].join(". ");
 
   if ('speechSynthesis' in window) {
     utterance = new SpeechSynthesisUtterance(textoCompleto);
@@ -320,7 +323,19 @@ function lerDevocional() {
   }
 }
 
-document.getElementById("btn-ouvir").addEventListener("click", lerDevocional);
+// Função extra: duplo clique para parar completamente
+function pararLeitura() {
+  if (estaLendo || estaPausado) {
+    window.speechSynthesis.cancel();
+    estaLendo = false;
+    estaPausado = false;
+    document.getElementById("btn-ouvir").textContent = "🔊 Ouvir devocional";
+  }
+}
+
+const botao = document.getElementById("btn-ouvir");
+botao.addEventListener("click", lerDevocional);
+botao.addEventListener("dblclick", pararLeitura);
   </script>
 </body>
 </html>
