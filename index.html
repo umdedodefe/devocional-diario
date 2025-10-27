@@ -332,7 +332,7 @@ function formatarAplicacoesPraticas() {
     novaEstrutura.classList.add("aplicacoes-formatadas");
     novaEstrutura.innerHTML = `
       <h3 style="text-align:center; margin-bottom:10px;">${titulo}</h3>
-      <ol style="text-align:justify; hyphens:auto; margin-left:20px; line-height:1.6;">
+      <ol style="text-align:justify; hyphens:auto; line-height:1.6;">
         ${itens.map(t => `<li>${t}</li>`).join("")}
       </ol>
     `;
