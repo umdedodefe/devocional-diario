@@ -296,6 +296,37 @@ function lerDevocional() {
 
     // Botão de leitura
     document.getElementById("btn-ouvir").addEventListener("click", lerDevocional);
+    // === FORMATA A SEÇÃO "APLICAÇÕES PRÁTICAS" EM LISTA NUMERADA ===
+function formatarAplicacoesPraticas() {
+  const bloco = document.querySelector(".practical p");
+  if (!bloco) return;
+
+  const texto = bloco.innerText;
+  const tituloMatch = texto.match(/^.*?:/); // Captura o título antes dos números
+  const titulo = tituloMatch ? tituloMatch[0].replace(":", "") : "Aplicações práticas";
+
+  // Captura os itens após o título, separados por números seguidos de ')'
+  const itens = texto
+    .split(/\d+\)/)
+    .map(t => t.trim())
+    .filter(t => t && !t.startsWith("Aplicações práticas"));
+
+  if (itens.length > 0) {
+    // Cria nova estrutura formatada
+    const novaEstrutura = document.createElement("div");
+    novaEstrutura.classList.add("aplicacoes-formatadas");
+    novaEstrutura.innerHTML = `
+      <h3 style="text-align:center; margin-bottom:10px;">${titulo}</h3>
+      <ol style="text-align:justify; hyphens:auto; margin-left:20px; line-height:1.6;">
+        ${itens.map(t => `<li>${t}</li>`).join("")}
+      </ol>
+    `;
+    bloco.parentElement.replaceWith(novaEstrutura);
+  }
+}
+
+// Executa a formatação com leve atraso (para garantir que o devocional foi carregado)
+setTimeout(formatarAplicacoesPraticas, 400);
   </script>
 </body>
 </html>
