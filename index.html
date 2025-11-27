@@ -160,6 +160,25 @@
       text-decoration: underline;
     }
 
+    /* 🔄 Botão Reiniciar Jornada */
+    #btn-resetar {
+      display: block;
+      margin: 10px auto 0 auto;
+      padding: 10px 20px;
+      background: #d49b2f;
+      border: none;
+      border-radius: 10px;
+      color: #4b2a1a;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.2s;
+    }
+
+    #btn-resetar:hover {
+      background: #c18a28;
+    }
+
     @media (max-width: 768px) {
       #banner-promocional {
         max-width: 95%;
@@ -196,6 +215,8 @@
   </main>
 
   <footer>
+    <button id="btn-resetar" onclick="reiniciarJornada()">🔄 Reiniciar Jornada</button>
+
     <p>© 2025 <strong>Um Dedo de Fé</strong> — por 
       <a href="https://www.instagram.com/prwevertonquintino/" target="_blank">@prwevertonquintino</a>
     </p>
@@ -254,7 +275,7 @@
         });
     }
 
-    /* 🔊 NOVA FUNÇÃO: TOCAR ÁUDIO GRAVADO MANUALMENTE */
+    /* 🔊 Função tocar áudio */
     function tocarAudio() {
       const audioPath = `audios/devocional-${numeroDevocional}.mp3`;
       const audio = new Audio(audioPath);
@@ -270,7 +291,17 @@
 
     document.getElementById("btn-ouvir").addEventListener("click", tocarAudio);
 
-    /* FORMATAÇÃO DAS APLICAÇÕES PRÁTICAS */
+    /* 🔄 Função Reiniciar Jornada */
+    function reiniciarJornada() {
+      localStorage.removeItem("dataInicioDevocional");
+      localStorage.removeItem("numeroDevocional");
+      localStorage.removeItem("ultimaDataAcesso");
+
+      alert("Jornada reiniciada! Voltando ao primeiro devocional...");
+      location.reload();
+    }
+
+    /* Formatar aplicações práticas */
     function formatarAplicacoesPraticas() {
       const bloco = document.querySelector(".practical p");
       if (!bloco) return;
@@ -302,4 +333,3 @@
 
 </body>
 </html>
-
