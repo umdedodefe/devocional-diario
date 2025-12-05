@@ -275,21 +275,34 @@
         });
     }
 
-    /* 🔊 Função tocar áudio */
-    function tocarAudio() {
-      const audioPath = `audios/devocional-${numeroDevocional}.mp3`;
-      const audio = new Audio(audioPath);
+    /* 🔊 Controle de áudio com play/pause */
+let audio = null;
 
-      audio.onerror = () => {
-        alert("Áudio deste devocional ainda não foi enviado.");
-      };
+function tocarAudio() {
+  const audioPath = `audios/devocional-${numeroDevocional}.mp3`;
 
-      audio.play().catch(() => {
-        alert("Não foi possível tocar o áudio.");
-      });
-    }
+  // Criar áudio apenas uma vez
+  if (!audio) {
+    audio = new Audio(audioPath);
 
-    document.getElementById("btn-ouvir").addEventListener("click", tocarAudio);
+    audio.onerror = () => {
+      alert("Áudio deste devocional ainda não foi enviado.");
+    };
+  }
+
+  // Se estiver tocando → pausa
+  if (!audio.paused) {
+    audio.pause();
+    return;
+  }
+
+  // Se estiver pausado → toca
+  audio.play().catch(() => {
+    alert("Não foi possível tocar o áudio.");
+  });
+}
+
+document.getElementById("btn-ouvir").addEventListener("click", tocarAudio);
 
     /* 🔄 Função Reiniciar Jornada */
     function reiniciarJornada() {
